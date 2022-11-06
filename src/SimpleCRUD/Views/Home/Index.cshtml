@@ -1,10 +1,60 @@
-﻿@model IEnumerable<SimpleCRUD.Models.User>
+﻿@model IndexViewModel
+@addTagHelper *, SimpleCRUD
  
+<style>
+    td, th {padding: 0 13px 0 0;}
+     
+    .glyphicon{
+        border: solid black;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+        margin: 0 5px;
+    }
+    .glyphicon-chevron-down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+      
+    .glyphicon-chevron-up {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+    }
+</style>
+
 <h2>Список пользователей</h2>
 <p><a asp-action="Create">Добавить пользователя</a></p>
+@* <form method="get"> *@
+@*     <div> *@
+@*         <label>Имя: </label> *@
+@*         <input asp-for="Name" /> *@
+@* *@
+@*         <input type="submit" value="Filter" /> *@
+@*     </div> *@
+@* </form> *@
 <table class="table">
-    <tr><th>Имя</th><th>Возраст</th><th></th><th></th></tr>
-    @foreach (var item in Model)
+    <tr>
+        <th>
+            <sort-header
+                action="Index"
+                up="@Model.SortViewModel.Up"
+                current="@Model.SortViewModel.Current"
+                property="@Model.SortViewModel.NameSort">
+                Имя
+            </sort-header>
+        </th>
+        <th>
+            <sort-header 
+                action="Index" 
+                up="@Model.SortViewModel.Up"
+                current="@Model.SortViewModel.Current" 
+                property="@Model.SortViewModel.AgeSort">
+                Возраст
+            </sort-header>
+        </th>
+        <th></th><th></th>
+    </tr>
+    @foreach (var item in Model.Users)
     {
         <tr>
             <td>@item.Name</td>
@@ -18,6 +68,5 @@
                 </form>
             </td>
         </tr>
-        
     }
 </table>

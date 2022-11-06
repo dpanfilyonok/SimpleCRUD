@@ -4,11 +4,11 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["SimpleCRUD/SimpleCRUD.csproj", "SimpleCRUD/"]
-RUN dotnet restore "SimpleCRUD/SimpleCRUD.csproj"
+WORKDIR /source
+COPY ["src/SimpleCRUD/SimpleCRUD.csproj", "src/SimpleCRUD/"]
+RUN dotnet restore "src/SimpleCRUD/SimpleCRUD.csproj"
 COPY . .
-WORKDIR "/src/SimpleCRUD"
+WORKDIR "/source/src/SimpleCRUD"
 RUN dotnet build "SimpleCRUD.csproj" -c Release -o /app/build
 
 FROM build AS publish

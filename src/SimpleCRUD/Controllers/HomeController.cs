@@ -16,9 +16,31 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(/*string? name, */SortState sortOrder = SortState.NameAsc)
     {
-        return View(await _context.Users.ToListAsync());
+        IQueryable<User>? users = _context.Users;
+        
+        // if (!string.IsNullOrEmpty(name))
+        // {
+        //     users = users.Where(p => p.Name!.Contains(name));
+        // }
+        
+        users = sortOrder switch
+        {
+            SortState.NameDesc => users.OrderByDescending(s => s.Name),
+            SortState.AgeAsc => users.OrderBy(s => s.Age),
+            SortState.AgeDesc => users.OrderByDescending(s => s.Age),
+            _ => users.OrderBy(s => s.Name),
+        };
+        
+        var viewModel = new IndexViewModel
+        {
+            Users = await users.AsNoTracking().ToListAsync(),
+            SortViewModel = new SortViewModel(sortOrder),
+            // FilterViewModel = new FilterViewModel { Name = name }
+        };
+        
+        return View(viewModel);
     }
 
     public IActionResult Create()
