@@ -16,14 +16,17 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public async Task<IActionResult> Index(/*string? name, */SortState sortOrder = SortState.NameAsc)
+    public async Task<IActionResult> Index(
+        string name, 
+        int page = 1,
+        SortState sortOrder = SortState.NameAsc)
     {
         IQueryable<User>? users = _context.Users;
         
-        // if (!string.IsNullOrEmpty(name))
-        // {
-        //     users = users.Where(p => p.Name!.Contains(name));
-        // }
+        if (!string.IsNullOrEmpty(name))
+        {
+            users = users.Where(p => p.Name!.Contains(name));
+        }
         
         users = sortOrder switch
         {
@@ -33,12 +36,15 @@ public class HomeController : Controller
             _ => users.OrderBy(s => s.Name),
         };
         
-        var viewModel = new IndexViewModel
-        {
-            Users = await users.AsNoTracking().ToListAsync(),
-            SortViewModel = new SortViewModel(sortOrder),
-            // FilterViewModel = new FilterViewModel { Name = name }
-        };
+        var count = await users.CountAsync();
+        const int pageSize = 3; 
+
+        var viewModel = new IndexViewModel(
+            await users.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(),
+            new PageViewModel(count, page, pageSize),
+            new FilterViewModel(name),
+            new SortViewModel(sortOrder)
+        );
         
         return View(viewModel);
     }

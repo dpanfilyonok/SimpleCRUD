@@ -16,10 +16,10 @@ public class SortHeaderTagHelper : TagHelper
         _urlHelperFactory = helperFactory;
     }
     
-    public SortState Property { get; set; } // значение текущего свойства, для которого создается тег
-    public SortState Current { get; set; }  // значение активного свойства, выбранного для сортировки
-    public string? Action { get; set; }  // действие контроллера, на которое создается ссылка
-    public bool Up { get; set; }    // сортировка по возрастанию или убыванию
+    public SortState Property { get; set; }
+    public SortState Current { get; set; } 
+    public string? Action { get; set; }
+    public bool Up { get; set; }
  
     [ViewContext]
     [HtmlAttributeNotBound]
@@ -28,7 +28,7 @@ public class SortHeaderTagHelper : TagHelper
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         var urlHelper = _urlHelperFactory.GetUrlHelper(ViewContext);
-        var url = urlHelper.Action(Action, new {sortOrder = Property});
+        var url = urlHelper.Action(Action, new { sortOrder = Property });
         output.TagName = "a";
         output.Attributes.SetAttribute("href", url);
         

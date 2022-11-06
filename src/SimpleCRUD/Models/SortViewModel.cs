@@ -23,8 +23,8 @@ public class SortViewModel
         };
     }
     
-    public SortState NameSort { get; set; } // значение для сортировки по имени
-    public SortState AgeSort { get; set; }    // значение для сортировки по возрасту
-    public SortState Current { get; set; }     // значение свойства, выбранного для сортировки
-    public bool Up { get; set; }  // Сортировка по возрастанию или убыванию
+    public SortState NameSort { get; set; } 
+    public SortState AgeSort { get; set; }    
+    public SortState Current { get; set; } 
+    public bool Up { get; set; }
 }

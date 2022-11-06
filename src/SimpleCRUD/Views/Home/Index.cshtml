@@ -2,8 +2,6 @@
 @addTagHelper *, SimpleCRUD
  
 <style>
-    td, th {padding: 0 13px 0 0;}
-     
     .glyphicon{
         border: solid black;
         border-width: 0 3px 3px 0;
@@ -15,7 +13,6 @@
         transform: rotate(45deg);
         -webkit-transform: rotate(45deg);
     }
-      
     .glyphicon-chevron-up {
         transform: rotate(-135deg);
         -webkit-transform: rotate(-135deg);
@@ -23,21 +20,22 @@
 </style>
 
 <h2>Список пользователей</h2>
-<p><a asp-action="Create">Добавить пользователя</a></p>
-@* <form method="get"> *@
-@*     <div> *@
-@*         <label>Имя: </label> *@
-@*         <input asp-for="Name" /> *@
-@* *@
-@*         <input type="submit" value="Filter" /> *@
-@*     </div> *@
-@* </form> *@
+<p>
+    <a asp-action="Create">Добавить пользователя</a>
+</p>
+<div>
+    <form method="get">
+        <label>Имя: </label>
+        <input name="name" value="@Model.FilterViewModel.SelectedName" />
+
+        <input type="submit" value="Filter" />
+    </form>
+</div>
 <table class="table">
     <tr>
         <th>
             <sort-header
                 action="Index"
-                up="@Model.SortViewModel.Up"
                 current="@Model.SortViewModel.Current"
                 property="@Model.SortViewModel.NameSort">
                 Имя
@@ -46,7 +44,6 @@
         <th>
             <sort-header 
                 action="Index" 
-                up="@Model.SortViewModel.Up"
                 current="@Model.SortViewModel.Current" 
                 property="@Model.SortViewModel.AgeSort">
                 Возраст
@@ -70,3 +67,9 @@
         </tr>
     }
 </table>
+<page-link
+    page-action="Index"
+    page-model="Model.PageViewModel"
+    page-url-name="@(Model.FilterViewModel.SelectedName)"
+    page-url-sortorder="@(Model.SortViewModel.Current)">
+</page-link>
